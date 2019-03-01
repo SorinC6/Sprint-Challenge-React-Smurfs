@@ -1,20 +1,33 @@
 import React from 'react';
+import styled from 'styled-components';
+import PropType from 'prop-types';
 
-const Smurf = props => {
-  return (
-    <div className="Smurf">
-      <h3>{props.name}</h3>
-      <strong>{props.height} tall</strong>
-      <p>{props.age} smurf years old</p>
-    </div>
-  );
+const SmurfDiv = styled.div`
+	padding: 10px;
+	border-style: double;
+	max-width: 40%;
+	margin: 0 auto;
+`;
+const Smurf = (props) => {
+	return (
+		<SmurfDiv className="Smurf">
+			<h3>{props.name}</h3>
+			<strong>{props.height} tall</strong>
+			<p>{props.age} smurf years old</p>
+		</SmurfDiv>
+	);
 };
 
 Smurf.defaultProps = {
-  name: '',
-  height: '',
-  age: ''
+	name: '',
+	height: '',
+	age: ''
 };
 
 export default Smurf;
 
+Smurf.propTypes = {
+	name: PropType.string.isRequired,
+	height: PropType.number.isRequired,
+	height: PropType.string.isRequired
+};
