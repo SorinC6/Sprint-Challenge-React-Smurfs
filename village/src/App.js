@@ -27,7 +27,8 @@ class App extends Component {
 			smurfs: [],
 			error: '',
 			loading: false,
-			smurf: smurf
+			smurf: smurf,
+			isUpdateing: false
 		};
 	}
 	// add any needed code to ensure that the smurfs collection exists on state and it has data coming from the server
@@ -43,8 +44,7 @@ class App extends Component {
 			.finally(this.stopSpinner());
 	}
 
-	addSmurf = (e) => {
-		e.preventDefault();
+	addSmurf = () => {
 		axios
 			.post('http://localhost:3333/smurfs', this.state.smurf)
 			.then((res) =>
@@ -68,6 +68,32 @@ class App extends Component {
 		axios
 			.delete(`http://localhost:3333/smurfs/${id}`)
 			.then((res) => this.setState({ smurfs: res.data }))
+			.catch((err) => this.setState({ error: err.message }))
+			.finally(this.stopSpinner());
+	};
+
+	pupulateSmurfFields = (id) => {
+		//console.log(id);
+		this.setState({
+			smurf: this.state.smurfs.find((sm) => sm.id === id),
+			isUpdateing: true
+		});
+		this.props.history.push('/smurf-form');
+	};
+
+	updateSmurf = () => {
+		this.startSpinner();
+		axios
+			.put(`http://localhost:3333/smurfs/${this.state.smurf.id}`, this.state.smurf)
+			.then(
+				(res) =>
+					this.setState({
+						smurfs: res.data,
+						isUpdateing: false,
+						smurf: smurf
+					}),
+				this.props.history.push('/')
+			)
 			.catch((err) => this.setState({ error: err.message }))
 			.finally(this.stopSpinner());
 	};
@@ -124,18 +150,21 @@ class App extends Component {
 							fontWeight: 'bold'
 						}}
 					>
-						Add a Smurf
+						{this.state.isUpdateing ? 'Update Smurf' : 'Add Smurf'}
 					</NavLink>
 				</WrapperNav>
 
 				<Route
+					exact
 					path="/smurf-form"
 					render={(props) => (
 						<SmurfForm
 							{...props}
 							handleInputChange={this.handleInputChange}
 							addSmurf={this.addSmurf}
+							updateSmurf={this.updateSmurf}
 							smurf={this.state.smurf}
+							isUpdateing={this.state.isUpdateing}
 						/>
 					)}
 				/>
@@ -148,7 +177,9 @@ class App extends Component {
 							{...props}
 							smurfs={this.state.smurfs}
 							deleteSmurf={this.deleteSmurf}
+							pupulateSmurfFields={this.pupulateSmurfFields}
 							textBtn="Delete Smurf"
+							textBtnUpdate="Update Smurf"
 						/>
 					)}
 				/>

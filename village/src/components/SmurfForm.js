@@ -29,9 +29,17 @@ const ButtonWrapper = styled.button`
 `;
 
 const SmurfForm = (props) => {
+	const handleSubmit = () => {
+		if (props.isUpdateing) {
+			props.updateSmurf();
+		} else {
+			props.addSmurf();
+		}
+	};
 	return (
 		<div className="SmurfForm">
 			<FromWrapper>
+				<h2>{props.isUpdateing ? 'Update Smurf' : 'Add new Smurf'}</h2>
 				<input onChange={props.handleInputChange} placeholder="name" value={props.smurf.name} name="name" />
 				<input onChange={props.handleInputChange} placeholder="age" value={props.smurf.age} name="age" />
 				<input
@@ -40,7 +48,9 @@ const SmurfForm = (props) => {
 					value={props.smurf.height}
 					name="height"
 				/>
-				<ButtonWrapper onClick={props.addSmurf}>Add to the village</ButtonWrapper>
+				<ButtonWrapper onClick={handleSubmit}>
+					{props.isUpdateing ? 'Update Smurf' : 'Add new Smurf'}
+				</ButtonWrapper>
 			</FromWrapper>
 		</div>
 	);

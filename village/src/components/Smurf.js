@@ -9,24 +9,24 @@ const SmurfDiv = styled.div`
 	margin: 0 auto;
 `;
 
-const BtnWrapper=styled.button`
-   padding:5px;
-   border-radius:5px;
-   color:black;
-   margin:10px;
-   &:hover{
-      background-color:black;
-      color:white;
-   }
-`
+const BtnWrapper = styled.button`
+	padding: 5px;
+	border-radius: 5px;
+	color: black;
+	margin: 10px;
+	&:hover {
+		background-color: black;
+		color: white;
+	}
+`;
 const Smurf = (props) => {
 	return (
 		<SmurfDiv className="Smurf">
 			<h3>{props.name}</h3>
 			<strong>{props.height} tall</strong>
 			<p>{props.age} smurf years old</p>
-			<BtnWrapper onClick={()=>props.deleteSmurf(props.id)}>{props.textBtn}</BtnWrapper>
-			<BtnWrapper onClick={()=>props.updateSmurf(props.id)}>{props.textBtn}</BtnWrapper>
+			<BtnWrapper onClick={() => props.deleteSmurf(props.id)}>{props.textBtn}</BtnWrapper>
+			<BtnWrapper onClick={() => props.pupulateSmurfFields(props.id)}>{props.textBtnUpdate}</BtnWrapper>
 		</SmurfDiv>
 	);
 };
