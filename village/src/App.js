@@ -14,6 +14,10 @@ const WrapperNav = styled.nav`
 	padding: 20px;
 `;
 
+const Container = styled.div`
+	background: rgba(233, 240, 207, 0.5);
+`;
+
 const smurf = {
 	name: '',
 	age: '',
@@ -130,7 +134,7 @@ class App extends Component {
 			);
 		}
 		return (
-			<div className="App">
+			<Container className="App">
 				<WrapperNav>
 					<NavLink
 						to="/"
@@ -183,7 +187,7 @@ class App extends Component {
 						/>
 					)}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }
