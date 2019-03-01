@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Route, NavLink } from 'react-router-dom';
+import { Route, NavLink, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import './App.css';
 import SmurfForm from './components/SmurfForm';
@@ -58,6 +58,18 @@ class App extends Component {
 				})
 			)
 			.catch((err) => console.log(err));
+
+		this.props.history.push('/');
+	};
+
+	deleteSmurf = (id) => {
+		this.startSpinner();
+		//console.log(id)
+		axios
+			.delete(`http://localhost:3333/smurfs/${id}`)
+			.then((res) => this.setState({ smurfs: res.data }))
+			.catch((err) => this.setState({ error: err.message }))
+			.finally(this.stopSpinner());
 	};
 
 	handleInputChange = (e) => {
@@ -128,10 +140,22 @@ class App extends Component {
 					)}
 				/>
 
-				<Route exact path="/" render={(props) => <Smurfs {...props} smurfs={this.state.smurfs} />} />
+				<Route
+					exact
+					path="/"
+					render={(props) => (
+						<Smurfs
+							{...props}
+							smurfs={this.state.smurfs}
+							deleteSmurf={this.deleteSmurf}
+							textBtn="Delete Smurf"
+						/>
+					)}
+				/>
 			</div>
 		);
 	}
 }
 
-export default App;
+const AppWithRouter = withRouter(App);
+export default AppWithRouter;
