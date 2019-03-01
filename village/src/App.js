@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import { Route, NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
+
+const WrapperNav = styled.nav`
+	width: 100%;
+	background-color: grey;
+	display: flex;
+	justify-content: space-evenly;
+	padding: 20px;
+`;
 
 const smurf = {
 	name: '',
@@ -45,7 +54,7 @@ class App extends Component {
 						name: '',
 						age: '',
 						height: ''
-					},
+					}
 				})
 			)
 			.catch((err) => console.log(err));
@@ -84,12 +93,42 @@ class App extends Component {
 		}
 		return (
 			<div className="App">
-				<SmurfForm
-					handleInputChange={this.handleInputChange}
-					addSmurf={this.addSmurf}
-					smurf={this.state.smurf}
+				<WrapperNav>
+					<NavLink
+						to="/"
+						activeStyle={{
+							fontWeight: 'bold',
+							color: 'white',
+							fontWeight: 'bold'
+						}}
+					>
+						Home
+					</NavLink>
+					<NavLink
+						to="/smurf-form"
+						activeStyle={{
+							fontWeight: 'bold',
+							color: 'white',
+							fontWeight: 'bold'
+						}}
+					>
+						Add a Smurf
+					</NavLink>
+				</WrapperNav>
+
+				<Route
+					path="/smurf-form"
+					render={(props) => (
+						<SmurfForm
+							{...props}
+							handleInputChange={this.handleInputChange}
+							addSmurf={this.addSmurf}
+							smurf={this.state.smurf}
+						/>
+					)}
 				/>
-				<Smurfs smurfs={this.state.smurfs} />
+
+				<Route exact path="/" render={(props) => <Smurfs {...props} smurfs={this.state.smurfs} />} />
 			</div>
 		);
 	}
